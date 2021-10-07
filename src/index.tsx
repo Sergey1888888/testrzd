@@ -1,17 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {Provider} from "react-redux";
+import {createGlobalStyle} from "styled-components";
+import 'semantic-ui-css/semantic.min.css'
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {store} from "./store";
 
+const GlobalStyle = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 16px;  
+  }
+  
+  body {
+    font-family: 'Lato', sans-serif;
+  }
+  
+  @media screen and (max-width: 1550px){
+    html {
+      font-size: 12px;
+    }
+  }
+  
+  @media screen and (max-width: 1115px){
+    html {
+      font-size: 10px;
+    }
+  }
+`
+// @ts-ignore
+window.store = store;
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <GlobalStyle/>
+        <App/>
+    </Provider>,
+    document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
