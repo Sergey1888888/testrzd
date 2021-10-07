@@ -93,7 +93,7 @@ const renderCheckbox = (field: ICheckboxFieldProp) => (
     </>
 );
 
-const PassengerInfo: React.FC<PassengerInfoProps> = ({passengerNumber, removePassenger, submitting}) => {
+const PassengerInfo: React.FC<PassengerInfoProps> = ({passengerNumber, removePassenger}) => {
     const formValues = useTypedSelector((state) => state.form.passengers?.values ? state.form.passengers?.values[`passenger${passengerNumber}`] : false);
     return (
         <StyledPassengerInfo>

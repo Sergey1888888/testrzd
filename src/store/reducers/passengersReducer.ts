@@ -12,7 +12,7 @@ export const passengerReducer = (state = initialState, action: PassengerAction):
         case PassengerActionTypes.UPLOAD_PASSENGERS_SUCCESS:
             return {...state, loading: false}
         case PassengerActionTypes.UPLOAD_PASSENGERS_ERROR:
-            return {...state, error: action.payload}
+            return {...state, loading: false, error: action.payload}
         default:
             return state;
     }

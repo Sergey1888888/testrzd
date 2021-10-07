@@ -1,4 +1,4 @@
-import {IFormValues, IPassenger, PassengerAction, PassengerActionTypes} from "../../types/passenger";
+import {IPassenger, PassengerAction, PassengerActionTypes} from "../../types/passenger";
 import {Dispatch} from "redux";
 import axios from "axios";
 

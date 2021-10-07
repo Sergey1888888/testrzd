@@ -1,7 +1,3 @@
-export interface IFormValues {
-    [index: string]: IPassenger;
-}
-
 export interface IPassenger {
     fss?: boolean;
     name: string;
