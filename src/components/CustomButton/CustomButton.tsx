@@ -15,6 +15,7 @@ interface CustomButtonProps {
     color?: SemanticCOLORS;
     width?: string;
     form?: string;
+    loading?: boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({children, ...props}) => {
