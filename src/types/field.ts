@@ -88,6 +88,7 @@ export interface IInputFieldProp {
 export interface ICheckboxFieldProp {
     label: React.ReactNode;
     input: {
+        checked: boolean;
         name: string;
         onChange: (value: string | number | boolean | (string | number | boolean)[] | undefined) => void;
         value: boolean;
@@ -97,4 +98,5 @@ export interface ICheckboxFieldProp {
         error: string;
         warning: string;
     }
+    defaultValue: boolean;
 }

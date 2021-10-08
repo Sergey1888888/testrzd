@@ -10,10 +10,11 @@ import {uploadPassengers} from "../../store/action-creators/passengers";
 import {useDispatch} from "react-redux";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
 
-const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, submitting, invalid}) => {
+const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, submitting, invalid, initialize}) => {
     const [count, setCount] = useState<number>(1);
     const [passengers, setPassengers] = useState<any[]>([]);
     const [formValues, setFormValues] = useState<IPassenger | null>(null);
+    const formValuesBeforeSubmit = useTypedSelector((state) => state.form.passengers?.values);
     const isLoading = useTypedSelector((state) => state.passengers.loading);
     const dispatch = useDispatch();
 
@@ -38,14 +39,30 @@ const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, s
 
     useEffect(() => {
         let passengersArr = [];
+        let initialValues: any = {};
+        let isRefresh = false;
         for (let i = 1; i <= count; i++) {
             passengersArr.push(<FormSection key={i} name={`passenger${i}` as string}>
                 <PassengerInfo passengerNumber={i} removePassenger={removePassenger} submitting={submitting}/>
             </FormSection>)
+            if (formValuesBeforeSubmit && formValuesBeforeSubmit[`passenger${i}`]) {
+                initialValues = {...formValuesBeforeSubmit};
+                if (initialValues[`passenger${i}`].fss === undefined) {
+                    initialValues[`passenger${i}`].fss = false;
+                    isRefresh = true;
+                }
+                if (initialValues[`passenger${i}`].isAgreed === undefined) {
+                    initialValues[`passenger${i}`].isAgreed = false;
+                    isRefresh = true;
+                }
+            }
         }
         setPassengers(passengersArr);
-    }, [count])
-    
+        if (isRefresh) {
+            initialize(initialValues)
+        }
+    }, [count, formValuesBeforeSubmit])
+
     return (
         <>
             <Flex justifyContent='space-between' gap='20px'>

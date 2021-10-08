@@ -84,7 +84,7 @@ const renderDateInput = (field: IDateInputFieldProp) => (
 const renderCheckbox = (field: ICheckboxFieldProp) => (
     <>
         <Form.Checkbox
-            checked={field.input.value}
+            checked={field.input.checked}
             name={field.input.name}
             label={field.label}
             onChange={(e: React.FormEvent<HTMLInputElement>, {checked}: any) => field.input.onChange(checked)}
