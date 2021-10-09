@@ -19,7 +19,16 @@ const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, s
     const dispatch = useDispatch();
 
     const removePassenger = (id: number) => {
-        setPassengers([...passengers.slice(id - 2, id), ...passengers.slice(id)])
+        const newFormValues: any = {};
+        for (let i = 1; i <= count - 1; i++) {
+            if (i >= id) {
+                newFormValues[`passenger${i}`] = formValuesBeforeSubmit && formValuesBeforeSubmit[`passenger${i + 1}`];
+            } else {
+                newFormValues[`passenger${i}`] = formValuesBeforeSubmit && formValuesBeforeSubmit[`passenger${i}`];
+            }
+        }
+        initialize(newFormValues);
+        setPassengers(passengers.slice(0, passengers.length - 1));
         setCount(count - 1);
     }
 

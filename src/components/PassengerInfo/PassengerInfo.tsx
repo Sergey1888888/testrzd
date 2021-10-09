@@ -111,6 +111,7 @@ const PassengerInfo: React.FC<PassengerInfoProps> = ({passengerNumber, removePas
                             component={renderCheckbox}
                             label='Оформление билета по ФСС'
                             name="fss"
+                            type="checkbox"
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -183,6 +184,7 @@ const PassengerInfo: React.FC<PassengerInfoProps> = ({passengerNumber, removePas
                 component={renderCheckbox}
                 label='Согласен на получение оповещений в случаях чрезвычайных ситуаций на железнодорожном транспорте'
                 name="isAgreed"
+                type="checkbox"
             />
             {formValues?.isAgreed && <>
                 <Text color='#666666'>
