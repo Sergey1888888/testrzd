@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Button, SemanticCOLORS} from "semantic-ui-react";
 
 const StyledButton = styled(Button)<CustomButtonProps>`
-  margin-top: ${({indent}) => indent ? '2rem !important' : ''};
+  margin-top: ${(props) => props.$indent ? '2rem !important' : ''};
   width: ${({width}) => width ? width : ''};
 `
 
@@ -18,9 +18,9 @@ interface CustomButtonProps {
     loading?: boolean;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({children, ...props}) => {
+const CustomButton: React.FC<CustomButtonProps> = ({children, indent, ...props}) => {
     return (
-        <StyledButton basic {...props}>{children}</StyledButton>
+        <StyledButton basic $indent={indent} {...props}>{children}</StyledButton>
     );
 };
 

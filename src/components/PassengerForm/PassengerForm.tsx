@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FormSection, InjectedFormProps, reduxForm} from "redux-form";
 import {Form} from "semantic-ui-react";
 import PassengerInfo from "../PassengerInfo/PassengerInfo";
@@ -18,7 +18,7 @@ const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, s
     const isLoading = useTypedSelector((state) => state.passengers.loading);
     const dispatch = useDispatch();
 
-    const removePassenger = (id: number) => {
+    const removePassenger = useCallback((id: number) => {
         const newFormValues: any = {};
         for (let i = 1; i <= count - 1; i++) {
             if (i >= id) {
@@ -28,9 +28,9 @@ const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, s
             }
         }
         initialize(newFormValues);
-        setPassengers(passengers.slice(0, passengers.length - 1));
+        setPassengers(p => p.slice(0, p.length - 1));
         setCount(count - 1);
-    }
+    }, [count, formValuesBeforeSubmit, initialize])
 
     const addPassenger = () => {
         setCount(count + 1);
@@ -44,7 +44,7 @@ const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, s
         if (formValues !== null) {
             dispatch(uploadPassengers(formValues));
         }
-    }, [formValues])
+    }, [formValues, dispatch])
 
     useEffect(() => {
         let passengersArr = [];
@@ -70,7 +70,7 @@ const PassengerForm: React.FC<InjectedFormProps<IPassenger>> = ({handleSubmit, s
         if (isRefresh) {
             initialize(initialValues)
         }
-    }, [count, formValuesBeforeSubmit])
+    }, [count, formValuesBeforeSubmit, initialize, removePassenger, submitting])
 
     return (
         <>
