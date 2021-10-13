@@ -23,7 +23,7 @@ const PassengerForm: React.FC<InjectedFormProps<IPassengerForm>> = ({handleSubmi
         if (formValues !== null) {
             dispatch(uploadPassengers(formValues));
         }
-    }, [formValues])
+    }, [formValues, dispatch])
 
     return (
         <>
