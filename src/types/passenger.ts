@@ -11,6 +11,10 @@ export interface IPassenger {
     email?: string;
 }
 
+export interface IPassengerForm {
+    passengers: IPassenger[] | {};
+}
+
 export interface PassengerState {
     loading: boolean;
     error: null | string;

@@ -26,12 +26,6 @@ const StyledPassengerInfo = styled.div`
   }
 `
 
-interface PassengerInfoProps {
-    passengerNumber: number;
-    removePassenger: (id: number) => void;
-    submitting: boolean;
-}
-
 const renderInput = (field: IInputFieldProp) => (
     <>
         <CutomInput
@@ -93,130 +87,139 @@ const renderCheckbox = (field: ICheckboxFieldProp) => (
     </>
 );
 
-const PassengerInfo: React.FC<PassengerInfoProps> = ({passengerNumber, removePassenger}) => {
-    const formValues = useTypedSelector((state) => state.form.passengers?.values ? state.form.passengers?.values[`passenger${passengerNumber}`] : false);
+const PassengerInfo = ({fields}: any) => {
+    const formValues = useTypedSelector((state) => state.form.passengers?.values ? state.form.passengers?.values.passengers : false);
+    console.log(formValues)
     return (
-        <StyledPassengerInfo>
-            <Flex justifyContent='space-between'>
-                <Header margin='0 0 2.3rem'>Пассажир №{passengerNumber}</Header>
-                <CustomButton color='red' onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.preventDefault();
-                    removePassenger(passengerNumber);
-                }}>Удалить пассажира</CustomButton>
-            </Flex>
-            <Grid columns={3} stackable doubling className='infoGrid'>
-                <Grid.Row>
-                    <Grid.Column verticalAlign='middle'>
-                        <Field
-                            component={renderCheckbox}
-                            label='Оформление билета по ФСС'
-                            name="fss"
-                            type="checkbox"
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Column>
+        <>
+            {fields.map((passenger: any, index: number) => (
+                <StyledPassengerInfo>
+                    <Flex justifyContent='space-between'>
+                        <Header margin='0 0 2.3rem'>Пассажир №{index + 1}</Header>
+                        <CustomButton color='red' onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            fields.remove(index);
+                        }}>Удалить пассажира</CustomButton>
+                    </Flex>
+                    <Grid columns={3} stackable doubling className='infoGrid'>
+                        <Grid.Row>
+                            <Grid.Column verticalAlign='middle'>
+                                <Field
+                                    component={renderCheckbox}
+                                    label='Оформление билета по ФСС'
+                                    name={`${passenger}.fss`}
+                                    type="checkbox"
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Column>
+                            <Field
+                                component={renderInput}
+                                label={<CustomLabel>Фамилия <Asterisk/></CustomLabel>}
+                                name={`${passenger}.surname`}
+                                placeholder="Фамилия"
+                                validate={[required, isOneWord]}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Field
+                                component={renderInput}
+                                label={<CustomLabel>Имя <Asterisk/></CustomLabel>}
+                                name={`${passenger}.name`}
+                                placeholder="Имя"
+                                validate={[required, isOneWord]}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Field
+                                component={renderInput}
+                                label={<CustomLabel>Отчество (обязательно, при наличии) <Asterisk/></CustomLabel>}
+                                name={`${passenger}.patronymic`}
+                                placeholder="Отчество"
+                                validate={isOneWord}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Field
+                                component={renderSelect}
+                                label={<CustomLabel>Пол <Asterisk/></CustomLabel>}
+                                name={`${passenger}.gender`}
+                                type="text"
+                                options={[
+                                    {key: "m", text: "Мужчина", value: "Мужчина"},
+                                    {key: "f", text: "Женщина", value: "Женщина"}
+                                ]}
+                                placeholder="Пол"
+                                validate={required}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Field
+                                component={renderDateInput}
+                                label={<CustomLabel>Дата рождения <Asterisk/></CustomLabel>}
+                                name={`${passenger}.birth`}
+                                placeholder="Дата рождения"
+                                validate={[required, dateBeforeToday]}
+                            />
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Field
+                                component={renderSelect}
+                                label={<CustomLabel>Гражданство <Asterisk/></CustomLabel>}
+                                name={`${passenger}.nationality`}
+                                options={[
+                                    {key: "ru", text: "Россия", value: "Россия"},
+                                    {key: "us", text: "США", value: "США"},
+                                    {key: "other", text: "Другое", value: "Другое"}
+                                ]}
+                                placeholder="Гражданство"
+                                validate={required}
+                            />
+                        </Grid.Column>
+                    </Grid>
                     <Field
-                        component={renderInput}
-                        label={<CustomLabel>Фамилия <Asterisk/></CustomLabel>}
-                        name="surname"
-                        placeholder="Фамилия"
-                        validate={[required, isOneWord]}
+                        component={renderCheckbox}
+                        label='Согласен на получение оповещений в случаях чрезвычайных ситуаций на железнодорожном транспорте'
+                        name={`${passenger}.isAgreed`}
+                        type="checkbox"
                     />
-                </Grid.Column>
-                <Grid.Column>
-                    <Field
-                        component={renderInput}
-                        label={<CustomLabel>Имя <Asterisk/></CustomLabel>}
-                        name="name"
-                        placeholder="Имя"
-                        validate={[required, isOneWord]}
-                    />
-                </Grid.Column>
-                <Grid.Column>
-                    <Field
-                        component={renderInput}
-                        label={<CustomLabel>Отчество (обязательно, при наличии) <Asterisk/></CustomLabel>}
-                        name="patronymic"
-                        placeholder="Отчество"
-                        validate={isOneWord}
-                    />
-                </Grid.Column>
-                <Grid.Column>
-                    <Field
-                        component={renderSelect}
-                        label={<CustomLabel>Пол <Asterisk/></CustomLabel>}
-                        name="gender"
-                        type="text"
-                        options={[
-                            {key: "m", text: "Мужчина", value: "Мужчина"},
-                            {key: "f", text: "Женщина", value: "Женщина"}
-                        ]}
-                        placeholder="Пол"
-                        validate={required}
-                    />
-                </Grid.Column>
-                <Grid.Column>
-                    <Field
-                        component={renderDateInput}
-                        label={<CustomLabel>Дата рождения <Asterisk/></CustomLabel>}
-                        name="birth"
-                        placeholder="Дата рождения"
-                        validate={[required, dateBeforeToday]}
-                    />
-                </Grid.Column>
-                <Grid.Column>
-                    <Field
-                        component={renderSelect}
-                        label={<CustomLabel>Гражданство <Asterisk/></CustomLabel>}
-                        name="nationality"
-                        options={[
-                            {key: "ru", text: "Россия", value: "Россия"},
-                            {key: "us", text: "США", value: "США"},
-                            {key: "other", text: "Другое", value: "Другое"}
-                        ]}
-                        placeholder="Гражданство"
-                        validate={required}
-                    />
-                </Grid.Column>
-            </Grid>
-            <Field
-                component={renderCheckbox}
-                label='Согласен на получение оповещений в случаях чрезвычайных ситуаций на железнодорожном транспорте'
-                name="isAgreed"
-                type="checkbox"
-            />
-            {formValues?.isAgreed && <>
-                <Text color='#666666'>
-                    Если вы хотите получать оповещения об изменении движения вашего поезда в случае чрезвычайной
-                    ситуации, укажите, пожалуйста, e-mail и/или телефон пассажира.
-                </Text>
-                <Text color='#666666' margin='0 0 1rem'>
-                    Если не хотите получать оповещения - снимите галочку согласия на оповещения.
-                </Text>
-                <Grid columns={3} stackable doubling>
-                    <Grid.Column>
-                        <Field
-                            component={renderInput}
-                            label={<CustomLabel>Телефон пассажира</CustomLabel>}
-                            name="phoneNumber"
-                            placeholder=""
-                            validate={formValues?.email ? formValues?.phoneNumber ? [isPhoneNumber] : undefined : [required, isPhoneNumber]}
-                        />
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Field
-                            component={renderInput}
-                            label={<CustomLabel>E-mail пассажира</CustomLabel>}
-                            name="email"
-                            placeholder=""
-                            validate={formValues?.phoneNumber ? formValues?.email ? [isEmail] : undefined : [required, isEmail]}
-                        />
-                    </Grid.Column>
-                </Grid>
-            </>
+                    {formValues[index]?.isAgreed && <>
+                        <Text color='#666666'>
+                            Если вы хотите получать оповещения об изменении движения вашего поезда в случае чрезвычайной
+                            ситуации, укажите, пожалуйста, e-mail и/или телефон пассажира.
+                        </Text>
+                        <Text color='#666666' margin='0 0 1rem'>
+                            Если не хотите получать оповещения - снимите галочку согласия на оповещения.
+                        </Text>
+                        <Grid columns={3} stackable doubling>
+                            <Grid.Column>
+                                <Field
+                                    component={renderInput}
+                                    label={<CustomLabel>Телефон пассажира</CustomLabel>}
+                                    name={`${passenger}.phoneNumber`}
+                                    placeholder=""
+                                    validate={formValues[index]?.email ? formValues[index]?.phoneNumber ? [isPhoneNumber] : undefined : [required, isPhoneNumber]}
+                                />
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Field
+                                    component={renderInput}
+                                    label={<CustomLabel>E-mail пассажира</CustomLabel>}
+                                    name={`${passenger}.email`}
+                                    placeholder=""
+                                    validate={formValues[index]?.phoneNumber ? formValues[index]?.email ? [isEmail] : undefined : [required, isEmail]}
+                                />
+                            </Grid.Column>
+                        </Grid>
+                    </>
+                    }
+                </StyledPassengerInfo>))
             }
-        </StyledPassengerInfo>
+            <CustomButton indent onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.preventDefault();
+                fields.push({});
+            }}>Добавить пассажира</CustomButton>
+        </>
     );
 };
 
