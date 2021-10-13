@@ -89,11 +89,10 @@ const renderCheckbox = (field: ICheckboxFieldProp) => (
 
 const PassengerInfo = ({fields}: any) => {
     const formValues = useTypedSelector((state) => state.form.passengers?.values ? state.form.passengers?.values.passengers : false);
-    console.log(formValues)
     return (
         <>
             {fields.map((passenger: any, index: number) => (
-                <StyledPassengerInfo>
+                <StyledPassengerInfo key={index}>
                     <Flex justifyContent='space-between'>
                         <Header margin='0 0 2.3rem'>Пассажир №{index + 1}</Header>
                         <CustomButton color='red' onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
