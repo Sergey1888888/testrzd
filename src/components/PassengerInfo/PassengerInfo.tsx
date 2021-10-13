@@ -89,7 +89,6 @@ const renderCheckbox = (field: ICheckboxFieldProp) => (
 
 const PassengerInfo = ({fields}: any) => {
     const formValues = useTypedSelector((state) => state.form.passengers?.values ? state.form.passengers?.values.passengers : false);
-    console.log(formValues)
     return (
         <>
             {fields.map((passenger: any, index: number) => (
