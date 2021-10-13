@@ -4,7 +4,7 @@ import {Field} from 'redux-form'
 import Header from "../Header/Header"
 import CustomLabel from "../CustomLabel/CustomLabel"
 import Asterisk from "../Icons/Asterisk/Asterisk";
-import {dateBeforeToday, isEmail, isOneWord, isPhoneNumber, required} from "../../validations/validations";
+import {dateBeforeToday, isDate, isEmail, isOneWord, isPhoneNumber, required} from "../../validations/validations";
 import {ICheckboxFieldProp, IDateInputFieldProp, IInputFieldProp, ISelectFieldProp} from "../../types/field";
 import 'moment/locale/ru';
 import ErrorText from "../ErrorText/ErrorText";
@@ -158,7 +158,7 @@ const PassengerInfo = ({fields}: any) => {
                                 label={<CustomLabel>Дата рождения <Asterisk/></CustomLabel>}
                                 name={`${passenger}.birth`}
                                 placeholder="Дата рождения"
-                                validate={[required, dateBeforeToday]}
+                                validate={[required, dateBeforeToday, isDate]}
                             />
                         </Grid.Column>
                         <Grid.Column>
